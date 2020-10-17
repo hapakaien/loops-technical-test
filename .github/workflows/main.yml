@@ -44,5 +44,3 @@ jobs:
       
       - name: Running tests
         run: vendor/bin/phpunit
-        env:
-          APP_KEY: ${{ php artisan key:generate --show }}
