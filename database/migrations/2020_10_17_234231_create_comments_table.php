@@ -22,7 +22,7 @@ class CreateCommentsTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('website');
-            $table->string('comment');
+            $table->text('comment');
             $table->timestamps();
         });
     }
