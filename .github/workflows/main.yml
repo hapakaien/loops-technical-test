@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres: 
+        image: postgres:alpine
+        ports: 
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: secret
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      
+      - name: Running tests
+        run: vendor/bin/phpunit
