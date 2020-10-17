@@ -14,35 +14,41 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create('id_ID');
+
         Comment::factory()
             ->count(3)
             ->forPost([
-                'title' => 'How create awesome app from simple idea',
+                'title' => $faker->sentence(8, true),
             ])
             ->create([
+                'name' => 'John Doe',
                 'email' => 'johndoe@email.com',
+                'website' => $faker->domainName,
             ]);
 
         Comment::factory()
             ->count(3)
             ->forPost([
-                'title' => 'How create awesome app from simple idea',
+                'title' => $faker->sentence(8, true),
             ])
             ->create();
 
         Comment::factory()
             ->count(3)
             ->forPost([
-                'title' => 'Automate your application distribution with CI/CD',
+                'title' => $faker->sentence(8, true),
             ])
             ->create([
+                'name' => 'Mr. X',
                 'email' => 'mrx@email.com',
+                'website' => $faker->domainName,
             ]);
 
         Comment::factory()
             ->count(3)
             ->forPost([
-                'title' => 'Automate your application distribution with CI/CD',
+                'title' => $faker->sentence(8, true),
             ])
             ->create();
     }

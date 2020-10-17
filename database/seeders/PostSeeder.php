@@ -14,20 +14,20 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        Post::factory()
-            ->forUser([
-                'name' => 'John Doe',
-            ])
-            ->create([
-                'title' => 'How create awesome app from simple idea',
-            ]);
+        $faker = \Faker\Factory::create('id_ID');
 
         Post::factory()
+            ->count(5)
             ->forUser([
-                'name' => 'Mr. X',
+                'name' => $faker->name,
             ])
-            ->create([
-                'title' => 'Automate your application distribution with CI/CD',
-            ]);
+            ->create();
+
+        Post::factory()
+            ->count(5)
+            ->forUser([
+                'name' => $faker->name,
+            ])
+            ->create();
     }
 }
