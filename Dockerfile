@@ -2,9 +2,9 @@ FROM webdevops/php-nginx:7.4-alpine
 
 # Set ARG
 ARG APP_NAME=Loopstest
-ARG APP_ENV=production
+ARG APP_ENV=development
 ARG APP_KEY=base64:4SJPNIIR68jCgjeQ9e57qJaHJikSE175HLxtTWY5MUg=
-ARG APP_DEBUG=false
+ARG APP_DEBUG=true
 ARG APP_URL=http://localhost
 ARG SESSION_DRIVER=redis
 ARG SESSION_DOMAIN=.localhost
