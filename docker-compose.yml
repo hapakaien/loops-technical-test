@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./:/app:rw,cached
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - redis
+      - db
+      - minio
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    ports:
+      - '6379:6379'
+
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: secret
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    volumes:
+      - storage:/data
+    command: server --address :9001 /data
+    ports:
+      - '9001:9001'
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: secretkey
+
+volumes:
+  redisdata:
+  dbdata:
+  storage:
