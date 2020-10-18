@@ -1,8 +1,7 @@
 FROM webdevops/php-nginx:7.4-alpine
 
 # Set ARG
-ARG WEB_DOCUMENT_ROOT=/app/public
-ARG APP_NAME=Portpoliwo
+ARG APP_NAME=Loopstest
 ARG APP_ENV=production
 ARG APP_KEY=base64:4SJPNIIR68jCgjeQ9e57qJaHJikSE175HLxtTWY5MUg=
 ARG APP_DEBUG=false
@@ -27,7 +26,7 @@ ARG AWS_BUCKET=dev
 ARG AWS_URL=http://minio:9001
 
 # Set ENV
-ENV WEB_DOCUMENT_ROOT=$WEB_DOCUMENT_ROOT \
+ENV WEB_DOCUMENT_ROOT=/app/public \
     PHP_DATE_TIMEZONE=Asia/Jakarta \
     APP_NAME=$APP_NAME \
     APP_ENV=$APP_ENV \
