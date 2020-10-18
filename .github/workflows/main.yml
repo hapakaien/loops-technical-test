@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -58,3 +58,22 @@ jobs:
         
       - name: Running tests
         run: vendor/bin/phpunit --verbose
+    
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event_name != 'pull_request'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Heroku
+        uses: gonuit/heroku-docker-deploy@v1.1.0
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ github.event.repository.name }}
+          docker_options: "-t ${{ github.repository }}"
+          dockerfile_directory: ./
