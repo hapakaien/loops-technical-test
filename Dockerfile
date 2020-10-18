@@ -78,3 +78,6 @@ RUN composer install --optimize-autoloader --no-dev
 
 # Optimization
 RUN php artisan optimize
+
+# Set non root
+USER application
