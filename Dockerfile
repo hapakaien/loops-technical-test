@@ -27,7 +27,8 @@ ARG AWS_BUCKET=dev
 ARG AWS_URL=http://minio:9001
 
 # Set ENV
-ENV WEB_DOCUMENT_ROOT=$WEB_DOCUMENT_ROOT \
+ENV CONTAINER_UID=1000 \
+    WEB_DOCUMENT_ROOT=$WEB_DOCUMENT_ROOT \
     PHP_DATE_TIMEZONE=Asia/Jakarta \
     APP_NAME=$APP_NAME \
     APP_ENV=$APP_ENV \
@@ -78,6 +79,3 @@ RUN composer install --optimize-autoloader --no-dev
 
 # Optimization
 RUN php artisan optimize
-
-# Set non root
-USER application
