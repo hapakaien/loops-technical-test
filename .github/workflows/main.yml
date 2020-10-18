@@ -69,6 +69,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       
+      - run: docker -v
+      - run: heroku -v
+      
       - name: Heroku
         uses: gonuit/heroku-docker-deploy@v1.1.0
         with:
