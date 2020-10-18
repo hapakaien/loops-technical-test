@@ -9,8 +9,11 @@ on:
 jobs:
   test:
     
-    name: Tests
+    name: Tests with PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [7.3, 7.4]
     services:
       postgres: 
         image: postgres:alpine
@@ -25,6 +28,14 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: none
 
       - name: Cache Composer packages
         id: composer-cache
@@ -46,4 +57,4 @@ jobs:
         run: php artisan config:clear
         
       - name: Running tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --verbose
