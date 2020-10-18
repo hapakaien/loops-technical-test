@@ -64,19 +64,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test]
     if: github.event_name != 'pull_request'
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       
-      - run: docker -v
-      - run: heroku -v
+      - name: Login to Heroku Container registry
+        run: heroku container:login
       
-      - name: Heroku
-        uses: gonuit/heroku-docker-deploy@v1.1.0
-        with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ github.event.repository.name }}
-          docker_options: "-t ${{ github.repository }}"
-          dockerfile_directory: ./
+      - name: Build and push
+        run: heroku container:push -a ${{ github.event.repository.name }} web
+
+      - name: Release
+        run: heroku container:release -a ${{ github.event.repository.name }} web
