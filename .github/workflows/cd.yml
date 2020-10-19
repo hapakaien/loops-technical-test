@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches: [ prod ]
+
+jobs:
+    
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.5.7 # This is the action
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ github.event.repository.name }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+      
+      - name: Run post script
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ github.event.repository.name }}
+        run: |
+          heroku run php artisan down
+          heroku run php artisan optimize:clear
+          heroku run php artisan migrate --force
+          heroku run php artisan optimize
+          heroku run php artisan up
