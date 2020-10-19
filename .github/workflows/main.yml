@@ -131,4 +131,4 @@ jobs:
           heroku run php artisan optimize:clear
           heroku run php artisan migrate --force
           heroku run php artisan optimize
-          heroku run php artisan optimize
+          heroku run php artisan up
