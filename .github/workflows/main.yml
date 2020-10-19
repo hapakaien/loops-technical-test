@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, prod ]
   pull_request:
     branches: [ main ]
 
@@ -40,11 +40,14 @@ jobs:
       - name: Build for production
         run: yarn prod
       
-      - name: Upload /public folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: prod
-          path: public/
+      - name: Add /public to git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -B prod
+          git add -f public/
+          git commit -m "Build front-end assets"
+          git push -f origin prod
   
   test:
     
@@ -103,23 +106,11 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: [test]
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/prod'
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Download /public folder
-        uses: actions/download-artifact@v2
-        with:
-          name: prod
-          path: public
-      
-      - name: Add /public to git
-        run: |
-          ls -la public
-          git add -f public/
-          git commit -m "Build front-end assets"
       
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.5.7 # This is the action
