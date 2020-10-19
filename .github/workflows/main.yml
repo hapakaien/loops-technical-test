@@ -115,6 +115,12 @@ jobs:
           name: prod
           path: public
       
+      - name: Add /public to git
+        run: |
+          ls -la public
+          git add -f public/
+          git commit -m "Build front-end assets"
+      
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.5.7 # This is the action
         with:
