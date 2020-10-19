@@ -1,8 +1,23 @@
+# Build stage using node:lts-alpine
+FROM node:lts-alpine as build
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies with yarn
+COPY package*.json ./
+COPY yarn* ./
+RUN yarn install --frozen-lockfile
+
+# Build app
+COPY . .
+RUN yarn prod
+
 FROM webdevops/php-nginx:7.4-alpine
 
 # Set ARG
 ARG APP_NAME=Loopstest
-ARG APP_ENV=development
+ARG APP_ENV=local
 ARG APP_KEY=base64:4SJPNIIR68jCgjeQ9e57qJaHJikSE175HLxtTWY5MUg=
 ARG APP_DEBUG=true
 ARG APP_URL=http://localhost
@@ -13,7 +28,6 @@ ARG REDIS_PASSWORD=null
 ARG REDIS_PORT=6379
 ARG SANCTUM_STATEFUL_DOMAINS=localhost
 ARG DB_CONNECTION=pgsql
-ARG DATABASE_URL
 ARG DB_HOST=db
 ARG DB_PORT=5432
 ARG DB_DATABASE=postgres
@@ -40,7 +54,6 @@ ENV WEB_DOCUMENT_ROOT=/app/public \
     REDIS_PORT=$REDIS_PORT \
     SANCTUM_STATEFUL_DOMAINS=$SANCTUM_STATEFUL_DOMAINS \
     DB_CONNECTION=$DB_CONNECTION \
-    DATABASE_URL=$DATABASE_URL \
     DB_HOST=$DB_HOST \
     DB_PORT=$DB_PORT \
     DB_DATABASE=$DB_DATABASE \
@@ -70,10 +83,10 @@ WORKDIR /app
 COPY --chown=1000:1000 . .
 
 # Copy /public folder from build stage
-# COPY --chown=1000:1000 --from=build /app/public ./public
+COPY --chown=1000:1000 --from=build /app/public ./public
 
 # Install dependencies
 RUN composer install --optimize-autoloader --no-dev
 
 # Optimization
-RUN php artisan optimize
+# RUN php artisan optimize
