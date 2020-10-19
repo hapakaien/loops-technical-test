@@ -14,7 +14,7 @@ class PostObserver
      */
     public function retrieved(Post $post)
     {
-        //
+        session()->flash('message-post', 'Semua post dengan email dan name penulisnya berhasil ditampilkan!');
     }
     /**
      * Handle the post "created" event.

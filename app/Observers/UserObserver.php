@@ -14,7 +14,7 @@ class UserObserver
      */
     public function retrieved(User $user)
     {
-        //
+        session()->flash('message-user', 'Semua user dengan comment dari usernya berhasil ditampilkan!');
     }
 
     /**

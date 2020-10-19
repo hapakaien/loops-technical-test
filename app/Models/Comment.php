@@ -23,6 +23,14 @@ class Comment extends Model
     ];
 
     /**
+     * Get the user that owns the comment.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'email', 'email');
+    }
+
+    /**
      * Get the post that owns the comment.
      */
     public function post()

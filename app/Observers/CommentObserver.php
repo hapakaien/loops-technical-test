@@ -14,9 +14,9 @@ class CommentObserver
      */
     public function retrieved(Comment $comment)
     {
-        //
+        session()->flash('message-comment', 'Semua komentar yang usernya tidak terdaftar di sistem berhasil ditampilkan!');
     }
-    
+
     /**
      * Handle the comment "created" event.
      *

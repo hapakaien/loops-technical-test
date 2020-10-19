@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class ContentPost extends Controller
@@ -16,6 +17,7 @@ class ContentPost extends Controller
     {
         return view('content-post', [
             'title' => 'Content Post',
+            'posts' => Post::with('user:id,name,email')->get(),
         ]);
     }
 }

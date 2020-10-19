@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class UserList extends Controller
+class CommentGuest extends Controller
 {
     /**
      * Handle the incoming request.
@@ -15,9 +15,9 @@ class UserList extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('user-list', [
-            'title' => 'User List',
-            'users' => User::with('comments')->get(),
+        return view('comment-guest', [
+            'title' => 'Comment Guest',
+            'comments' => Comment::doesntHave('user')->get(),
         ]);
     }
 }

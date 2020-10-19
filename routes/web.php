@@ -17,4 +17,4 @@ Route::get('/', \App\Http\Controllers\ContentPost::class)->name('home');
 
 Route::get('/user', \App\Http\Controllers\UserList::class)->name('user');
 
-Route::get('/comment', \App\Http\Controllers\ContentPost::class)->name('comment');
+Route::get('/comment', \App\Http\Controllers\CommentGuest::class)->name('comment');
