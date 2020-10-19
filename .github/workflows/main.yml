@@ -122,12 +122,6 @@ jobs:
           heroku_app_name: ${{ github.event.repository.name }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
       
-      - run: |
-          ls -la public
-          git add -f public/
-          git commit -m "Build front-end assets"
-          git push -f heroku main
-      
       - name: Run post script
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
