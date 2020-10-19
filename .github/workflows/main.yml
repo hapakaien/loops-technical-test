@@ -114,6 +114,13 @@ jobs:
           name: prod
           path: public
       
+      - name: Commit built assets
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f public/
+          git commit -m "Build front-end assets"
+      
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.5.7 # This is the action
         with:
