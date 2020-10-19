@@ -37,6 +37,7 @@ jobs:
     
     name: Tests with PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    needs: [build]
     strategy:
       matrix:
         php: [7.3, 7.4]
